@@ -1,3 +1,5 @@
+echo "-------------fixing issue to push jenkins file...-----------"  
+
 # Undo the last commit but keep your changes
 git reset --soft HEAD~1
 
