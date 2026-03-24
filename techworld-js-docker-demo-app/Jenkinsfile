@@ -1,0 +1,33 @@
+pipeline {
+    agent any
+    
+    stages {
+        
+        
+        stage('Build and start') {
+            steps {
+                echo 'Building...Starting the app'
+                sh 'docker compose up -d --build'
+            }
+        }
+        
+        stage('Verify') {
+             steps {
+                echo 'Verifying...'
+                sleep 10
+                sh 'docker compose ps'
+                sh 'docker compose logs --tail=10'
+            }
+        }
+        
+    }
+    post {
+        success {
+            echo "✅ Docker Compose deployment successful"
+        }
+        failure {
+            echo "❌ Deployment failed"
+            sh 'docker-compose logs'
+        }
+    }
+}
