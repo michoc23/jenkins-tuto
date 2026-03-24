@@ -2,25 +2,31 @@ pipeline {
     agent any
     
     stages {
-        
-        
         stage('Build') {
             steps {
-                echo 'Building...'
-                // Add your build commands here
+                echo "Building..."
+                sh 'docker compose up -d --build'  
             }
         }
         
         stage('Test') {
             steps {
                 echo 'Testing...'
-                // Add your test commands here
+                sh '''
+                    sleep 3
+                    docker compose ps
+                    docker compose logs --tail=10
+                '''
             }
         }
-        stage( 'Deploy') {
-            steps {
-                echo 'deploying...'
-            }
+    }
+    
+    post {
+        success {
+            echo "✅ Success"
+        }
+        failure {
+            echo "❌ Failed"
         }
     }
 }
